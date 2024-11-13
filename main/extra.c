@@ -56,10 +56,12 @@ void scan_keypad()
                 if (gpio_get_level(col_pins[j]) == 0)
                 {                
                     printf("Key pressed: %c\n", keymap[i][j]);
-                   // add_to_code(keymap[i][j]);                              
+                   // add_to_code(keymap[i][j]);   
+                    set_servo_speed(10);                           
                     gpio_set_level(led_pin, 1);
                     vTaskDelay(500 / portTICK_PERIOD_MS);
                     gpio_set_level(led_pin, 0);
+                    set_servo_speed(0);
                 }
             }
             gpio_set_level(row_pins[i], 1);

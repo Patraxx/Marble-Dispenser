@@ -25,3 +25,11 @@ void initialize_servo()
     };
     ledc_channel_config(&ledc_channel);
 }
+
+void set_servo_speed(int speed)    // ellan 1 till 100 och -1 och -100
+{    
+    // Calculate the duty cycle
+    uint32_t duty = (SERVO_MIN_PULSEWIDTH + (SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) * speed / 100) * (1 << LEDC_TIMER_16_BIT);
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty);
+    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+}

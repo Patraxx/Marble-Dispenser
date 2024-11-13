@@ -9,6 +9,7 @@
 void app_main(void)
 {
     initialize_gpio();
+    initialize_servo();
 
     while(1){
 
