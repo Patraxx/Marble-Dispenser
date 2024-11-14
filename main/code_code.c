@@ -1,7 +1,7 @@
 #include "code_code.h"
 
 bool used_codes[NUM_CODES] = {false};
-char input_code[CODE_LENGTH+1]; // +1 for null terminator
+char input_code[CODE_LENGTH+1];
 
 void add_to_code(char key, int *index)
 {
@@ -9,7 +9,7 @@ void add_to_code(char key, int *index)
     if (*index < CODE_LENGTH)
     {
         input_code[*index] = key;
-        (*index++);
+        (*index)++;
     }
     else
     {
@@ -18,8 +18,11 @@ void add_to_code(char key, int *index)
 }
 
 
+
+
 // Function to check and mark a code as used
-bool use_code(const char* code) {
+bool use_code(const char *code) {
+    
     // Check if the code is valid and has not been used yet
     for (int i = 0; i < NUM_CODES; i++) {
         if (strcmp(accepted_codes[i], code) == 0) {
@@ -35,6 +38,14 @@ bool use_code(const char* code) {
     }
     printf("Code %s not found.\n", code);
     return false;  // Code not found in the list
+}
+
+void reset_input_code()
+{
+    for (int i = 0; i < CODE_LENGTH; i++)
+    {
+        input_code[i] = '\0';
+    }
 }
 
 const char* accepted_codes[NUM_CODES] = {

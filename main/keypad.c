@@ -9,7 +9,8 @@
 
 int row_pins[] = {22, 20, 18, 15}; // Based on keypad's documentation for row mapping
 int col_pins[] = {21, 23, 19};
-int index = 0;
+int code_index = 0;
+extern char input_code[CODE_LENGTH + 1];
 
 char keymap[4][3] = {
     {'1', '2', '3'},
@@ -40,31 +41,43 @@ void initialize_gpio()
 
 void scan_keypad(void *pvParameters)
 {   
-    for (int i = 0; i < 4; i++)
-        {
-            gpio_set_level(row_pins[i], 0);
-            for (int j = 0; j < 3; j++)
+    bool correct_code = false;
+    while(1)
+    {
+
+        for (int i = 0; i < 4; i++)
             {
-                if (gpio_get_level(col_pins[j]) == 0)
-                {                
-                    printf("Key pressed: %c\n", keymap[i][j]);
-                    add_to_code(keymap[i][j], &index);   
-                   // set_servo_speed(40);                           
-                   // gpio_set_level(led_pin, 1);
-                    vTaskDelay(500 / portTICK_PERIOD_MS);
-                   // gpio_set_level(led_pin, 0);
-                   // set_servo_speed(40);
-                   if(index == CODE_LENGTH){
-                       add_to_code('\0', &index);
-                       use_code(input_code);
-                       index = 0;
-                   }
-                   //if the code has a full length, do something here
-
-
-                }
-            }
-            gpio_set_level(row_pins[i], 1);
+                gpio_set_level(row_pins[i], 0);
+                for (int j = 0; j < 3; j++)
+                {
+                    if (gpio_get_level(col_pins[j]) == 0)
+                    {   set_servo_speed(40);
+                        printf("Key pressed: %c\n", keymap[i][j]);
+                        add_to_code(keymap[i][j], &code_index);                             
+                    // gpio_set_level(led_pin, 1);
+                        vTaskDelay(500 / portTICK_PERIOD_MS);
+                        set_servo_speed(0); 
         
+                    if(code_index == CODE_LENGTH){
+                        add_to_code('\0', &code_index);
+                        correct_code = use_code(input_code);
+                        code_index = 0;
+                        
+                        if(correct_code){
+                            set_servo_speed(40);
+                            
+                            vTaskDelay(500 / portTICK_PERIOD_MS);
+                            set_servo_speed(0);                        
+                            } 
+                    
+                    }
+                    vTaskDelay(20 / portTICK_PERIOD_MS);
+                }
+                  
+            }
+            gpio_set_level(row_pins[i], 1);      
         }
+        vTaskDelay(20 / portTICK_PERIOD_MS);
+    }
+    vTaskDelete(NULL);
 }

@@ -26,10 +26,33 @@ void initialize_servo()
     ledc_channel_config(&ledc_channel);
 }
 
+
+
 void set_servo_speed(int speed)    // ellan 1 till 100 och -1 och -100
 {    
+    if (speed > 100) speed = 100;
+    if (speed < -100) speed = -100;
     // Calculate the duty cycle
-    uint32_t duty = (SERVO_MIN_PULSEWIDTH + (SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) * speed / 100) * (1 << LEDC_TIMER_16_BIT);
+
+    uint32_t pulsewidth = SERVO_NEUTRAL_PULSEWIDTH + (speed * (SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) / 200);
+
+    // Scale the pulse width to the timer resolution
+    uint32_t duty = (pulsewidth * SERVO_MAX_DUTY) / 20000; // 20000 microseconds for 50Hz
+
+    printf("Speed: %d, Pulsewidth: %lu, Duty: %lu\n", speed, pulsewidth, duty);
+
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+
+    /*
+    
+    uint32_t pulse_width = SERVO_NEUTRAL_PULSEWIDTH + (speed * (SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) / 200);
+
+    // Convert pulse width (in microseconds) to duty cycle
+    uint32_t duty = pulse_width * (1 << LEDC_TIMER_16_BIT) / SERVO_MAX_PULSEWIDTH;
+
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty);
+    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+    
+    */
 }
