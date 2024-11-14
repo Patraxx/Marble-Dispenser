@@ -5,7 +5,9 @@
     "board/esp32c6-ftdi.cfg"
   ],
   "files.associations": {
-    "extra.h": "c"
+    "extra.h": "c",
+    "string.h": "c",
+    "freertos.h": "c"
   },
   "idf.flashType": "UART",
   "idf.portWin": "COM6"

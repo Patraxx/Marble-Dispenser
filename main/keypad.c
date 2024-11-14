@@ -1,24 +1,15 @@
-#include "extra.h"
+#include "keypad.h"
+#include "code_code.h"
+#include "servo.h"
 
+
+
+
+// Create an array to track which codes have been used
 
 int row_pins[] = {22, 20, 18, 15}; // Based on keypad's documentation for row mapping
 int col_pins[] = {21, 23, 19};
-
-char input_code[CODE_LENGTH+1]; // +1 for null terminator
-
-void add_to_code(char key)
-{
-    static int index = 0;
-    if (index < CODE_LENGTH)
-    {
-        input_code[index] = key;
-        index++;
-    }
-    else
-    {
-        printf("Code is full\n");
-    }
-}
+int index = 0;
 
 char keymap[4][3] = {
     {'1', '2', '3'},
@@ -47,7 +38,7 @@ void initialize_gpio()
     gpio_set_level(led_pin, 0);
 }
 
-void scan_keypad()
+void scan_keypad(void *pvParameters)
 {   
     for (int i = 0; i < 4; i++)
         {
@@ -57,12 +48,20 @@ void scan_keypad()
                 if (gpio_get_level(col_pins[j]) == 0)
                 {                
                     printf("Key pressed: %c\n", keymap[i][j]);
-                   // add_to_code(keymap[i][j]);   
-                    set_servo_speed(40);                           
-                    gpio_set_level(led_pin, 1);
+                    add_to_code(keymap[i][j], &index);   
+                   // set_servo_speed(40);                           
+                   // gpio_set_level(led_pin, 1);
                     vTaskDelay(500 / portTICK_PERIOD_MS);
-                    gpio_set_level(led_pin, 0);
-                    set_servo_speed(40);
+                   // gpio_set_level(led_pin, 0);
+                   // set_servo_speed(40);
+                   if(index == CODE_LENGTH){
+                       add_to_code('\0', &index);
+                       use_code(input_code);
+                       index = 0;
+                   }
+                   //if the code has a full length, do something here
+
+
                 }
             }
             gpio_set_level(row_pins[i], 1);

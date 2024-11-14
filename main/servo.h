@@ -1,7 +1,7 @@
 #ifndef SERVO_H
 #define SERVO_H
 
-#include "extra.h"
+#include "keypad.h"
 #include "driver/ledc.h"
 
 #define SERVO_PIN 14 // GPIO pin connected to the servo
