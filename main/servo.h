@@ -4,7 +4,7 @@
 #include "extra.h"
 #include "driver/ledc.h"
 
-#define SERVO_PIN 6 // GPIO pin connected to the servo
+#define SERVO_PIN 14 // GPIO pin connected to the servo
 #define SERVO_NEUTRAL_PULSEWIDTH 1500 // Neutral pulse width in microseconds
 #define SERVO_MIN_PULSEWIDTH 1000 // Minimum pulse width in microseconds
 #define SERVO_MAX_PULSEWIDTH 2000 

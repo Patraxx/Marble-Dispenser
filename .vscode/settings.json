@@ -6,5 +6,7 @@
   ],
   "files.associations": {
     "extra.h": "c"
-  }
+  },
+  "idf.flashType": "UART",
+  "idf.portWin": "COM6"
 }
