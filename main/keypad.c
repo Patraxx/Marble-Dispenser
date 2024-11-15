@@ -51,24 +51,30 @@ void scan_keypad(void *pvParameters)
                 for (int j = 0; j < 3; j++)
                 {
                     if (gpio_get_level(col_pins[j]) == 0)
-                    {   set_servo_speed(40);
+                    {   
                         printf("Key pressed: %c\n", keymap[i][j]);
-                        add_to_code(keymap[i][j], &code_index);                             
-                    // gpio_set_level(led_pin, 1);
-                        vTaskDelay(500 / portTICK_PERIOD_MS);
-                        set_servo_speed(0); 
+                        add_to_code(keymap[i][j], &code_index); 
+                        //pip?                            
+                   
+                        vTaskDelay(100 / portTICK_PERIOD_MS);
+                        
         
                     if(code_index == CODE_LENGTH){
                         add_to_code('\0', &code_index);
                         correct_code = use_code(input_code);
                         code_index = 0;
+                        reset_input_code();
                         
                         if(correct_code){
-                            set_servo_speed(40);
+                           //rör armen
                             
                             vTaskDelay(500 / portTICK_PERIOD_MS);
                             set_servo_speed(0);                        
                             } 
+                        else{
+
+                            //blinka relativt snabbt, resetta
+                        }
                     
                     }
                     vTaskDelay(20 / portTICK_PERIOD_MS);
