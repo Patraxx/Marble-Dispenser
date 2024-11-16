@@ -53,22 +53,29 @@ void scan_keypad(void *pvParameters)
                     if (gpio_get_level(col_pins[j]) == 0)
                     {   
                         printf("Key pressed: %c\n", keymap[i][j]);
-                        add_to_code(keymap[i][j], &code_index);                             
-                    // gpio_set_level(led_pin, 1);
-                        vTaskDelay(500 / portTICK_PERIOD_MS);
+                        add_to_code(keymap[i][j], &code_index); 
+                        //pip?                            
                    
+                        vTaskDelay(100 / portTICK_PERIOD_MS);
+                        
         
                     if(code_index == CODE_LENGTH){
                         add_to_code('\0', &code_index);
                         correct_code = use_code(input_code);
                         code_index = 0;
+                        reset_input_code();
                         
                         if(correct_code){
+                           //rör armen
                             
                             printf("Code %s accepted and used.\n", input_code);
                             set_servo_speed();
                             reset_input_code();                                     
                             } 
+                        else{
+
+                            //blinka relativt snabbt, resetta
+                        }
                     
                     }
                     vTaskDelay(20 / portTICK_PERIOD_MS);

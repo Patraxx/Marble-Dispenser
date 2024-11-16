@@ -7,7 +7,7 @@ void initialize_servo()
     ledc_timer_config_t ledc_timer = {
         .speed_mode = LEDC_LOW_SPEED_MODE,
         .timer_num = LEDC_TIMER_0,
-        .duty_resolution = LEDC_TIMER_16_BIT,
+        .duty_resolution = LEDC_TIMER_11_BIT, // 0-2047
         .freq_hz = 50, // Frequency in Hertz
         .clk_cfg = LEDC_AUTO_CLK
     };
@@ -26,6 +26,7 @@ void initialize_servo()
     ledc_channel_config(&ledc_channel);
 }
 
+<<<<<<< HEAD
 
 
 void set_servo_speed()    // ellan 1 till 100 och -1 och -100
@@ -42,3 +43,5 @@ void stop_servo()
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
 }
+=======
+>>>>>>> 8732fda12905974d10b00a689c60aea79d79f55e
