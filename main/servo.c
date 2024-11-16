@@ -27,18 +27,3 @@ void initialize_servo()
 }
 
 
-
-void set_servo_speed()    // ellan 1 till 100 och -1 och -100
-{    
-    printf("Setting servo speed\n");
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 5270);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-
-}
-
-void stop_servo()
-{
- printf("Stopping servo\n");
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-}
