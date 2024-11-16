@@ -12,8 +12,8 @@
 
 void initialize_servo();
 
-void set_servo_speed(int speed);
-
+void set_servo_speed();
+void stop_servo();
 
 
 

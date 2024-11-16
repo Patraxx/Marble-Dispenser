@@ -51,12 +51,12 @@ void scan_keypad(void *pvParameters)
                 for (int j = 0; j < 3; j++)
                 {
                     if (gpio_get_level(col_pins[j]) == 0)
-                    {   set_servo_speed(40);
+                    {   
                         printf("Key pressed: %c\n", keymap[i][j]);
                         add_to_code(keymap[i][j], &code_index);                             
                     // gpio_set_level(led_pin, 1);
                         vTaskDelay(500 / portTICK_PERIOD_MS);
-                        set_servo_speed(0); 
+                   
         
                     if(code_index == CODE_LENGTH){
                         add_to_code('\0', &code_index);
@@ -64,10 +64,10 @@ void scan_keypad(void *pvParameters)
                         code_index = 0;
                         
                         if(correct_code){
-                            set_servo_speed(40);
                             
-                            vTaskDelay(500 / portTICK_PERIOD_MS);
-                            set_servo_speed(0);                        
+                            printf("Code %s accepted and used.\n", input_code);
+                            set_servo_speed();
+                            reset_input_code();                                     
                             } 
                     
                     }

@@ -28,7 +28,7 @@ bool use_code(const char *code) {
         if (strcmp(accepted_codes[i], code) == 0) {
             if (!used_codes[i]) {
                 used_codes[i] = true;  // Mark the code as used
-                printf("Code %s accepted and used.\n", code);
+                
                 return true;  // Successfully used the code
             } else {
                 printf("Code %s has already been used.\n", code);
