@@ -26,7 +26,6 @@ void initialize_servo()
     ledc_channel_config(&ledc_channel);
 }
 
-<<<<<<< HEAD
 
 
 void set_servo_speed()    // ellan 1 till 100 och -1 och -100
@@ -43,5 +42,3 @@ void stop_servo()
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
 }
-=======
->>>>>>> 8732fda12905974d10b00a689c60aea79d79f55e

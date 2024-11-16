@@ -14,27 +14,6 @@ void initialize_buttons(void)
     config.pull_down_en = GPIO_PULLDOWN_DISABLE;
     config.intr_type = GPIO_INTR_DISABLE;
     gpio_config(&config);
-}
-
-void servo_chatgpt(){
-
-
-    // Set neutral position (about 1500 µs pulse)
-    int neutral_duty = 1500 / 9.77; // Calculate duty for neutral position
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, neutral_duty);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    vTaskDelay(pdMS_TO_TICKS(1000)); // Wait a moment in neutral
-
-    // Small movement - adjust duty slightly above neutral
-    int small_move_duty = neutral_duty + 10; // Fine-tune this step value for minimal movement
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, small_move_duty);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    vTaskDelay(pdMS_TO_TICKS(500)); // Move for half a second
-
-    // Return to neutral to stop the servo
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, neutral_duty);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    vTaskDelay(pdMS_TO_TICKS(1000)); // Wait a moment in neutral
 
 }
 void move_servo(int speed)    // ellan 1 till 100 och -1 och -100
@@ -80,7 +59,6 @@ void app_main(void)
     initialize_gpio();
     initialize_buttons();
     initialize_servo();
-<<<<<<< HEAD
 
     while(1)
     {
@@ -90,8 +68,6 @@ void app_main(void)
         stop_servo();
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
-=======
->>>>>>> 8732fda12905974d10b00a689c60aea79d79f55e
 
     xTaskCreate(read_servo_buttons, "read_servo_buttons", 2048, NULL, 10, NULL);
     
