@@ -14,10 +14,7 @@ void initialize_servo();
 
 void set_servo_speed();
 void stop_servo();
-
-
-
-
+void move_servo_after_correct_code();
 
 
 

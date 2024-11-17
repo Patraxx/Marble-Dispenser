@@ -65,11 +65,11 @@ void scan_keypad(void *pvParameters)
                         code_index = 0;
                         reset_input_code();
                         
-                        if(correct_code){
-                           //rör armen
-                            
+                        if(correct_code){                            
                             printf("Code %s accepted and used.\n", input_code);
-                            set_servo_speed();
+                            move_servo_after_correct_code();
+                            vTaskDelay(500 / portTICK_PERIOD_MS);
+                            stop_servo();
                             reset_input_code();                                     
                             } 
                         else{
