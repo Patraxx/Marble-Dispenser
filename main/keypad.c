@@ -5,10 +5,20 @@
 
 
 
+
 // Create an array to track which codes have been used
 
-int row_pins[] = {22, 20, 18, 15}; // Based on keypad's documentation for row mapping
-int col_pins[] = {21, 23, 19};
+// pinout    1 2 3 4 5 6 7
+
+// column    2   1   3    
+// row         1   4   2 3
+
+//         23 22 21 20 19 18 15       
+
+//int row_pins[] = {22, 20, 18, 15}; // Based on keypad's documentation for row mapping
+//int col_pins[] = {21, 23, 19};
+int row_pins[] = {22, 15, 18, 23}; // Based on keypad's documentation for row mapping
+int col_pins[] = {21, 20, 19};
 int code_index = 0;
 extern char input_code[CODE_LENGTH + 1];
 
