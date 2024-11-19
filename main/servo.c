@@ -23,20 +23,25 @@ void initialize_servo()
         .duty = 0, // Initial duty cycle
         .hpoint = 0
     };
+    
     ledc_channel_config(&ledc_channel);
 }
 
 void move_servo_after_correct_code()
 {
-    printf("Moving servo\n");
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 650);
+   // printf("Moving servo\n");
+    
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 540);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+    printf("current duty: %ld\n", ledc_get_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
 }
 void stop_servo()
 {
- printf("Stopping servo\n");
+//   printf("Stopping servo\n");
+    
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+    printf("current duty: %ld\n", ledc_get_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
 }
 
 
