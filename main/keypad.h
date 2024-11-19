@@ -9,7 +9,9 @@
 #include <string.h>
 
 
-#define led_pin GPIO_NUM_12
+#define LED_PIN_RED GPIO_NUM_9
+
+#define LED_PIN_GREEN GPIO_NUM_12
 
 
 void initialize_gpio();

@@ -3,7 +3,6 @@
 #include "servo.h"
 #include "code_code.h"
 
-int servo_speed = 500;
 
 void initialize_buttons(void)
 {
@@ -11,6 +10,17 @@ void initialize_buttons(void)
     config.pin_bit_mask = (1 << 2) | (1 << 3) | (1 << 4);
     config.mode = GPIO_MODE_INPUT;
     config.pull_up_en = GPIO_PULLUP_ENABLE;
+    config.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    config.intr_type = GPIO_INTR_DISABLE;
+    gpio_config(&config);
+}
+
+void initialize_LED(void)
+{
+    gpio_config_t config;
+    config.pin_bit_mask = (1 << LED_PIN_RED);
+    config.mode = GPIO_MODE_OUTPUT;
+    config.pull_up_en = GPIO_PULLUP_DISABLE;
     config.pull_down_en = GPIO_PULLDOWN_DISABLE;
     config.intr_type = GPIO_INTR_DISABLE;
     gpio_config(&config);

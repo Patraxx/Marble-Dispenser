@@ -2,6 +2,7 @@
 
 bool used_codes[NUM_CODES] = {false};
 char input_code[CODE_LENGTH+1];
+#define DEBUGGING 1
 
 void add_to_code(char key, int *index)
 {
@@ -27,9 +28,15 @@ bool use_code(const char *code) {
     for (int i = 0; i < NUM_CODES; i++) {
         if (strcmp(accepted_codes[i], code) == 0) {
             if (!used_codes[i]) {
-                used_codes[i] = true;  // Mark the code as used
-                
-                return true;  // Successfully used the code
+                #if !DEBUGGING
+                    printf("Code %s has been used.\n", code);
+                    used_codes[i] = true;  // Mark the code as used
+                    return true;  // Successfully used the code
+                #else
+                    printf("Code is correct. \n");
+                    return true;        
+                #endif
+                             
             } else {
                 printf("Code %s has already been used.\n", code);
                 return false;  // Code already used

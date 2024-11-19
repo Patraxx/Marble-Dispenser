@@ -6,6 +6,7 @@
 
 
 
+
 // Create an array to track which codes have been used
 
 // pinout    1 2 3 4 5 6 7
@@ -44,9 +45,9 @@ void initialize_gpio()
         gpio_set_direction(col_pins[i], GPIO_MODE_INPUT);
         gpio_set_pull_mode(col_pins[i], GPIO_PULLUP_ONLY);
     }
-    esp_rom_gpio_pad_select_gpio(led_pin);
-    gpio_set_direction(led_pin, GPIO_MODE_OUTPUT);
-    gpio_set_level(led_pin, 0);
+    esp_rom_gpio_pad_select_gpio(LED_PIN_GREEN);
+    gpio_set_direction(LED_PIN_GREEN, GPIO_MODE_OUTPUT);
+    gpio_set_level(LED_PIN_GREEN, 0);
 }
 
 void scan_keypad(void *pvParameters)
@@ -66,7 +67,7 @@ void scan_keypad(void *pvParameters)
                         add_to_code(keymap[i][j], &code_index); 
                         //pip?                            
                    
-                        vTaskDelay(100 / portTICK_PERIOD_MS);
+                        vTaskDelay(200 / portTICK_PERIOD_MS);
                         
         
                     if(code_index == CODE_LENGTH){
@@ -78,7 +79,7 @@ void scan_keypad(void *pvParameters)
                         if(correct_code){                            
                             printf("Code %s accepted and used.\n", input_code);
                             move_servo_after_correct_code();
-                            vTaskDelay(500 / portTICK_PERIOD_MS);
+                            vTaskDelay(1000 / portTICK_PERIOD_MS);
                             stop_servo();
                             reset_input_code();                                     
                             } 
