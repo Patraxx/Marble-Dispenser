@@ -31,7 +31,7 @@ void move_servo_after_correct_code()
 {
    // printf("Moving servo\n");
     
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 540);
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 665);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
     printf("current duty: %ld\n", ledc_get_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
 }

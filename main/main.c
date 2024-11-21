@@ -3,6 +3,10 @@
 #include "servo.h"
 #include "code_code.h"
 
+//640 med batteri
+
+//655 med sladd
+
 
 void initialize_buttons(void)
 {
@@ -32,7 +36,11 @@ void initialize_LED(void)
 #define MAX_DUTY 1023  // Max duty cycle (adjust to your resolution, e.g., 13-bit)
 #define MIN_DUTY 0     // Min duty cycle
 
-volatile int servo_duty = 0; // Global variable for duty cycle
+volatile int servo_duty = 650; // Global variable for duty cycle
+int increment = 5;
+
+bool is_servo_running = false;
+bool current_state = false;
 
 void button_reading_task(void *arg)
 {
@@ -51,49 +59,51 @@ void button_reading_task(void *arg)
         // Button 1: Start/stop servo
         if (gpio_get_level(BUTTON1_PIN) == 0) // Button 1 is pressed
         {
-            if (servo_duty != 0)
-            {
-                printf("Button 1 pressed: Starting servo with duty %d\n", servo_duty);
-                ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, servo_duty);
-                ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-            }
-            else
+            if (is_servo_running)
             {
                 printf("Button 1 pressed: Stopping servo\n");
                 ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
                 ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+                is_servo_running = false;
             }
-            vTaskDelay(100 / portTICK_PERIOD_MS); // Debounce delay
+            else
+            {
+                printf("Button 1 pressed: Starting servo with duty %d\n", servo_duty);
+                ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, servo_duty);
+                ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+                is_servo_running = true;
+            }
+            vTaskDelay(300/ portTICK_PERIOD_MS); // Debounce delay
         }
 
         // Button 2: Increase duty
         if (gpio_get_level(BUTTON2_PIN) == 0) // Button 2 is pressed
         {
-            if (servo_duty + 10 <= MAX_DUTY)
+            if (servo_duty + increment <= MAX_DUTY)
             {
-                servo_duty += 10;
+                servo_duty += increment;
                 printf("Button 2 pressed: Increasing duty to %d\n", servo_duty);
             }
             else
             {
                 printf("Button 2 pressed: Duty at maximum (%d)\n", MAX_DUTY);
             }
-            vTaskDelay(100 / portTICK_PERIOD_MS); // Debounce delay
+            vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
         }
 
         // Button 3: Decrease duty
         if (gpio_get_level(BUTTON3_PIN) == 0) // Button 3 is pressed
         {
-            if (servo_duty - 10 >= MIN_DUTY)
+            if (servo_duty - increment >= MIN_DUTY)
             {
-                servo_duty -= 10;
+                servo_duty -= increment;
                 printf("Button 3 pressed: Decreasing duty to %d\n", servo_duty);
             }
             else
             {
                 printf("Button 3 pressed: Duty at minimum (%d)\n", MIN_DUTY);
             }
-            vTaskDelay(100 / portTICK_PERIOD_MS); // Debounce delay
+            vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
         }
 
         vTaskDelay(10 / portTICK_PERIOD_MS); // Small delay to reduce CPU usage
@@ -107,15 +117,21 @@ void app_main(void)
    // initialize_gpio();
   
     initialize_servo();
+   
+  
+    xTaskCreate(button_reading_task, "button_reading_task", 2048, NULL, 10, NULL);
 
+    /*
     while(1)
     {   
-        move_servo_after_correct_code();
+        ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 665);
+        ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
+        printf("current duty: %ld\n", ledc_get_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
         vTaskDelay(500 / portTICK_PERIOD_MS);
         stop_servo();
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
-
+    }*/
+        
     
   //  xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);
 
