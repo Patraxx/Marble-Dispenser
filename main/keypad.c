@@ -1,0 +1,101 @@
+#include "keypad.h"
+#include "code_code.h"
+#include "servo.h"
+
+
+
+
+
+
+// Create an array to track which codes have been used
+
+// pinout    1 2 3 4 5 6 7
+
+// column    2   1   3    
+// row         1   4   2 3
+
+//         23 22 21 20 19 18 15       
+
+//int row_pins[] = {22, 20, 18, 15}; // Based on keypad's documentation for row mapping
+//int col_pins[] = {21, 23, 19};
+int row_pins[] = {22, 15, 18, 23}; // Based on keypad's documentation for row mapping
+int col_pins[] = {21, 20, 19};
+int code_index = 0;
+extern char input_code[CODE_LENGTH + 1];
+
+char keymap[4][3] = {
+    {'1', '2', '3'},
+    {'4', '5', '6'},
+    {'7', '8', '9'},
+    {'*', '0', '#'}};
+    
+
+void initialize_gpio()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        esp_rom_gpio_pad_select_gpio(row_pins[i]);
+        gpio_set_direction(row_pins[i], GPIO_MODE_OUTPUT);
+        gpio_set_level(row_pins[i], 0);
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        esp_rom_gpio_pad_select_gpio(col_pins[i]);
+        gpio_set_direction(col_pins[i], GPIO_MODE_INPUT);
+        gpio_set_pull_mode(col_pins[i], GPIO_PULLUP_ONLY);
+    }
+    esp_rom_gpio_pad_select_gpio(LED_PIN_GREEN);
+    gpio_set_direction(LED_PIN_GREEN, GPIO_MODE_OUTPUT);
+    gpio_set_level(LED_PIN_GREEN, 0);
+}
+
+void scan_keypad(void *pvParameters)
+{   
+    bool correct_code = false;
+    while(1)
+    {
+
+        for (int i = 0; i < 4; i++)
+            {
+                gpio_set_level(row_pins[i], 0);
+                for (int j = 0; j < 3; j++)
+                {
+                    if (gpio_get_level(col_pins[j]) == 0)
+                    {   
+                        printf("Key pressed: %c\n", keymap[i][j]);
+                        add_to_code(keymap[i][j], &code_index); 
+                        //pip?                            
+                   
+                        vTaskDelay(200 / portTICK_PERIOD_MS);
+                        
+        
+                    if(code_index == CODE_LENGTH){
+                        add_to_code('\0', &code_index);
+                        correct_code = use_code(input_code);
+                        code_index = 0;
+                        reset_input_code();
+                        
+                        if(correct_code){                            
+                            printf("Code %s accepted and used.\n", input_code);
+                            move_servo_after_correct_code();
+                            vTaskDelay(1000 / portTICK_PERIOD_MS);
+                            stop_servo();
+                            reset_input_code();                                     
+                            } 
+                        else{
+
+                            //blinka relativt snabbt, resetta
+                        }
+                    
+                    }
+                    vTaskDelay(20 / portTICK_PERIOD_MS);
+                }
+                  
+            }
+            gpio_set_level(row_pins[i], 1);      
+        }
+        vTaskDelay(20 / portTICK_PERIOD_MS);
+    }
+    vTaskDelete(NULL);
+}
