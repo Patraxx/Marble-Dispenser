@@ -2,22 +2,6 @@
 #include "code_code.h"
 #include "servo.h"
 
-
-
-
-
-
-// Create an array to track which codes have been used
-
-// pinout    1 2 3 4 5 6 7
-
-// column    2   1   3    
-// row         1   4   2 3
-
-//         23 22 21 20 19 18 15       
-
-//int row_pins[] = {22, 20, 18, 15}; // Based on keypad's documentation for row mapping
-//int col_pins[] = {21, 23, 19};
 int row_pins[] = {22, 15, 18, 23}; // Based on keypad's documentation for row mapping
 int col_pins[] = {21, 20, 19};
 int code_index = 0;
@@ -45,9 +29,7 @@ void initialize_gpio()
         gpio_set_direction(col_pins[i], GPIO_MODE_INPUT);
         gpio_set_pull_mode(col_pins[i], GPIO_PULLUP_ONLY);
     }
-    esp_rom_gpio_pad_select_gpio(LED_PIN_GREEN);
-    gpio_set_direction(LED_PIN_GREEN, GPIO_MODE_OUTPUT);
-    gpio_set_level(LED_PIN_GREEN, 0);
+
 }
 
 void scan_keypad(void *pvParameters)
@@ -78,7 +60,7 @@ void scan_keypad(void *pvParameters)
                         
                         if(correct_code){                            
                             printf("Code %s accepted and used.\n", input_code);
-                            move_servo_after_correct_code();
+                            move_servo();
                             vTaskDelay(1000 / portTICK_PERIOD_MS);
                             stop_servo();
                             reset_input_code();                                     

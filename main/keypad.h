@@ -9,11 +9,6 @@
 #include <string.h>
 
 
-#define LED_PIN_RED GPIO_NUM_9
-
-#define LED_PIN_GREEN GPIO_NUM_13
-
-
 void initialize_gpio();
 
 void scan_keypad();

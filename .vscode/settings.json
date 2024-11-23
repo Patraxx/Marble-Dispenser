@@ -11,7 +11,10 @@
     "gpio.h": "c",
     "gpio_etm.h": "c",
     "esp_rom_gpio.h": "c",
-    "esp_system.h": "c"
+    "esp_system.h": "c",
+    "keypad.h": "c",
+    "servo.h": "c",
+    "general.h": "c"
   },
   "idf.flashType": "UART",
   "idf.portWin": "COM9"

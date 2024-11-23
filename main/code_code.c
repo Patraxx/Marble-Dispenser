@@ -19,8 +19,6 @@ void add_to_code(char key, int *index)
 }
 
 
-
-
 // Function to check and mark a code as used
 bool use_code(const char *code) {
     
