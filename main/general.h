@@ -12,7 +12,7 @@
 
 void initialize_buttons(void);
 void initialize_LED(void);
-void button_reading_task(void *arg);
+void button_reading_task_for_servo(void *arg);
 
 
 #endif // GENERAL_H
