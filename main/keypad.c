@@ -51,8 +51,9 @@ void scan_keypad(void *pvParameters)
                    
                         vTaskDelay(200 / portTICK_PERIOD_MS);
                         
-        
-                    if(code_index == CODE_LENGTH){
+                        //DEBUGGREj, FIXA SEN
+                    if(code_index == CODE_LENGTH){  //DEBUGGREj, FIXA SEN
+                        //DEBUGGREj, FIXA SEN
                         add_to_code('\0', &code_index);
                         correct_code = use_code(input_code);
                         code_index = 0;
@@ -61,7 +62,7 @@ void scan_keypad(void *pvParameters)
                         if(correct_code){                            
                             printf("Code %s accepted and used.\n", input_code);
                             move_servo();
-                            vTaskDelay(1000 / portTICK_PERIOD_MS);
+                            vTaskDelay(400/ portTICK_PERIOD_MS);
                             stop_servo();
                             reset_input_code();                                     
                             } 

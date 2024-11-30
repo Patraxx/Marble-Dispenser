@@ -1,6 +1,6 @@
 #include "servo.h"
 
-int servo_duty = 665;
+int servo_duty = DUTY;
 int increment = 5;
 
 void initialize_servo()
@@ -31,10 +31,12 @@ void initialize_servo()
 
 void increase_servo_duty(){
     servo_duty +=increment;
+    printf("increased duty to: %d\n", servo_duty);
 
 }
 void decrease_servo_duty(){
     servo_duty -=increment;
+    printf("lowered duty to: %d\n", servo_duty);
 }
 
 int is_servo_running()
@@ -46,15 +48,15 @@ int is_servo_running()
 void move_servo()
 {
     
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 665);
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, servo_duty);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    printf("current duty: %ld\n", ledc_get_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
+    printf("Moving servo with duty: %d\n", servo_duty);
 }
 void stop_servo()
 {  
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    printf("current duty: %ld\n", ledc_get_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
+    printf("Stopping servo\n");
 }
 
 

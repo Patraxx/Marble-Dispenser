@@ -4,7 +4,7 @@
 void initialize_buttons(void)
 {
     gpio_config_t config;
-    config.pin_bit_mask = (1 << BUTTON_PIN1) | (1 << 3) | (1 << 4);
+    config.pin_bit_mask = (1 << BUTTON_PIN1) | (1 << BUTTON_PIN2) | (1 << BUTTON_PIN3);
     config.mode = GPIO_MODE_INPUT;
     config.pull_up_en = GPIO_PULLUP_ENABLE;
     config.pull_down_en = GPIO_PULLDOWN_DISABLE;
@@ -29,18 +29,12 @@ void button_reading_task_for_servo(void *arg)  //button reading, but reserved fo
         // Button 1: Start/stop servo
         if (gpio_get_level(BUTTON_PIN1) == 0) // Button 1 is pressed
         {
-            if (is_servo_running())
-            {
-               stop_servo();
-            }
-            else
-            {                        
-               move_servo();             
-            }
+            move_servo();
             vTaskDelay(300/ portTICK_PERIOD_MS); // Debounce delay
+            stop_servo();
         }
         // Button 2: Increase duty
-        if (gpio_get_level(BUTTON_PIN1) == 0) // Button 2 is pressed
+        if (gpio_get_level(BUTTON_PIN2) == 0) // Button 2 is pressed
         {
             //increase duty
             increase_servo_duty();
@@ -49,7 +43,7 @@ void button_reading_task_for_servo(void *arg)  //button reading, but reserved fo
         // Button 3: Decrease duty
         if (gpio_get_level(BUTTON_PIN3) == 0) // Button 3 is pressed
         {
-            //decrease duty
+            decrease_servo_duty();
             vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
         }
 
@@ -63,9 +57,8 @@ void button_reading_task_for_servo(void *arg)  //button reading, but reserved fo
 
 typedef struct {
     gpio_num_t button_pin;          // GPIO pin for the button
-    void (*button_action)(void);    // Function to execute on button press
-    TickType_t debounce_delay;      // Debounce delay in ticks
-} button_config_t;
+    void (*button_action)(void);    
+    
 
 
 void button_reading_task(void *arg)
