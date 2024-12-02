@@ -8,6 +8,8 @@
 #define CODE_LENGTH 4
 #define NUM_CODES 25
 
+extern bool code_correct;
+
 extern const char* accepted_codes[NUM_CODES];
 extern char input_code[CODE_LENGTH+1]; // +1 for null terminator
 
