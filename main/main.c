@@ -3,6 +3,7 @@
 #include "servo.h"
 #include "code_code.h"
 #include "general.h"
+#include "driver/adc.h"
 
 #define PIEZO_PIN 5
 
@@ -13,22 +14,30 @@ void initalize_input_piezo()
     config.pin_bit_mask = (1 << PIEZO_PIN);
     config.mode = GPIO_MODE_INPUT;
     config.pull_up_en = GPIO_PULLUP_DISABLE;
-    config.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    config.pull_down_en = GPIO_PULLDOWN_ENABLE;
     config.intr_type = GPIO_INTR_DISABLE;
     gpio_config(&config);
 }
 
-void piezo_task(void *arg)
+
+void raw_adc_task(void *arg)
 {
+        int adc_value = 0;
+        adc1_config_width(ADC_WIDTH_BIT_12);
+        adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_0);
+
     while (1)
-    {
-        if (gpio_get_level(PIEZO_PIN) == 1)
+    {     
+        adc_value = adc1_get_raw(ADC1_CHANNEL_0);
+        if (adc_value > 1000)
         {
             printf("Piezo is pressed\n");
-            vTaskDelay(100 / portTICK_PERIOD_MS);
-            correct_code = true;
+            move_servo();
+            vTaskDelay(300 / portTICK_PERIOD_MS);
+            stop_servo();
         }
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+
     }
 }
 
@@ -39,10 +48,12 @@ void app_main(void)
     initialize_gpio();
     initialize_buttons();
     initialize_servo();
+
+
   
 
    
-    xTaskCreate(piezo_task, "piezo_task", 2048, NULL, 10, NULL);
+    xTaskCreate(raw_adc_task, "piezo_task", 2048, NULL, 10, NULL);
 
     xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);
    
