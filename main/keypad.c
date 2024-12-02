@@ -6,6 +6,7 @@ int row_pins[] = {22, 15, 18, 23}; // Based on keypad's documentation for row ma
 int col_pins[] = {21, 20, 19};
 int code_index = 0;
 extern char input_code[CODE_LENGTH + 1];
+bool correct_code = false;
 
 char keymap[4][3] = {
     {'1', '2', '3'},
@@ -34,7 +35,7 @@ void initialize_gpio()
 
 void scan_keypad(void *pvParameters)
 {   
-    bool correct_code = false;
+    correct_code = false;
     while(1)
     {
 
@@ -51,26 +52,27 @@ void scan_keypad(void *pvParameters)
                    
                         vTaskDelay(200 / portTICK_PERIOD_MS);
                         
-                        //DEBUGGREj, FIXA SEN
-                    if(code_index == CODE_LENGTH){  //DEBUGGREj, FIXA SEN
-                        //DEBUGGREj, FIXA SEN
+                       
+                    if(code_index == CODE_LENGTH){ 
+
                         add_to_code('\0', &code_index);
                         correct_code = use_code(input_code);
                         code_index = 0;
                         reset_input_code();
                         
-                        if(correct_code){                            
+                        while(correct_code){  
+                            
+
                             printf("Code %s accepted and used.\n", input_code);
                             move_servo();
-                            vTaskDelay(400/ portTICK_PERIOD_MS);
+                            vTaskDelay(200/ portTICK_PERIOD_MS);
                             stop_servo();
-                            reset_input_code();                                     
-                            } 
-                        else{
-
-                            //blinka relativt snabbt, resetta
-                        }
-                    
+                            vTaskDelay(200/ portTICK_PERIOD_MS);                                                                    
+                            }    
+                            reset_input_code();                                  
+                    }
+                    else{
+                        printf("Code %s not accepted.\n", input_code);
                     }
                     vTaskDelay(20 / portTICK_PERIOD_MS);
                 }

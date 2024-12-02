@@ -18,32 +18,31 @@ void initalize_input_piezo()
     gpio_config(&config);
 }
 
+void piezo_task(void *arg)
+{
+    while (1)
+    {
+        if (gpio_get_level(PIEZO_PIN) == 1)
+        {
+            printf("Piezo is pressed\n");
+            vTaskDelay(100 / portTICK_PERIOD_MS);
+            correct_code = true;
+        }
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+}
+
 
 void app_main(void)
 {  
     initalize_input_piezo();
     initialize_gpio();
     initialize_buttons();
-  
     initialize_servo();
-    int piezo = 0;
+  
 
-    while (1)
-    {
-        piezo = gpio_get_level(PIEZO_PIN);
-        /* code */
-        printf("Piezo: %d\n", piezo);
-        if (piezo == 1)
-        {
-            move_servo();
-            vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
-            stop_servo();
-        }
-        
-
-        vTaskDelay(50 / portTICK_PERIOD_MS);
-    }
-    
+   
+    xTaskCreate(piezo_task, "piezo_task", 2048, NULL, 10, NULL);
 
     xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);
    
