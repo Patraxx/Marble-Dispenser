@@ -1,0 +1,11 @@
+göra två ledlampor, grön röd
+en piezo för piip
+en piezo för kontroll av ifall en kula fallit ner.
+programmera piezo
+programmera, piip
+programmera ledlampor
+fixa sladdhål
+täcka över hela lådan.
+limma igen kanterna, alternativt en mekanism för att kunna öppna och justera, kanske med gummiband?
+fixa ett hål för knappsatsen, fästa den på en platta och sen dra sladdar till mikrokontrollen
+fästa mikrokontrollen på insidan av lådan, dra kablar.
