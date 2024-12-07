@@ -1,8 +1,8 @@
 {
   "C_Cpp.intelliSenseEngine": "default",
-  "idf.adapterTargetName": "esp32c6",
+  "idf.adapterTargetName": "esp32c3",
   "idf.openOcdConfigs": [
-    "board/esp32c6-ftdi.cfg"
+    "board/esp32c3-ftdi.cfg"
   ],
   "files.associations": {
     "extra.h": "c",
@@ -14,7 +14,8 @@
     "esp_system.h": "c",
     "keypad.h": "c",
     "servo.h": "c",
-    "general.h": "c"
+    "general.h": "c",
+    "esp_adc_cal.h": "c"
   },
   "idf.flashType": "UART",
   "idf.portWin": "COM9"
