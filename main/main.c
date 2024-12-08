@@ -14,7 +14,7 @@ void initalize_input_piezo()
     config.pin_bit_mask = (1 << PIEZO_PIN);
     config.mode = GPIO_MODE_INPUT;
     config.pull_up_en = GPIO_PULLUP_DISABLE;
-    config.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    config.pull_down_en = GPIO_PULLDOWN_ENABLE;
     config.intr_type = GPIO_INTR_DISABLE;
     gpio_config(&config);
 }
@@ -27,15 +27,15 @@ void raw_adc_task(void *arg)
     while (1)
     {     
         adc_value = adc1_get_raw(ADC1_CHANNEL_5);
-        printf("ADC value: %d\n", adc_value);
-        if (adc_value < 2500)
+       // printf("ADC value: %d\n", adc_value);
+        if (adc_value > 70)
         {
-          //  printf("Piezo is pressed\n");
-           // move_servo();
-           // vTaskDelay(300 / portTICK_PERIOD_MS);
-           // stop_servo();
+            printf("Piezo is pressed\n");
+            move_servo();
+            vTaskDelay(300 / portTICK_PERIOD_MS);
+            stop_servo();
         }
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
 
     }
 }
@@ -49,7 +49,7 @@ void app_main(void)
     initialize_servo();
 
     adc1_config_width(ADC_WIDTH_BIT_12);
-    adc1_config_channel_atten(ADC1_CHANNEL_5, ADC_ATTEN_DB_11);
+    adc1_config_channel_atten(ADC1_CHANNEL_5, ADC_ATTEN_DB_12);
   
 
    
