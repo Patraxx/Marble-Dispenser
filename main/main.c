@@ -1,9 +1,11 @@
 #include "driver/gpio.h"
+#include "driver/adc.h"
 #include "keypad.h"
 #include "servo.h"
 #include "code_code.h"
 #include "general.h"
 #include "driver/adc.h"
+#include "esp_adc_cal.h"
 
 #define PIEZO_PIN 5
 
@@ -27,8 +29,8 @@ void raw_adc_task(void *arg)
     while (1)
     {     
         adc_value = adc1_get_raw(ADC1_CHANNEL_5);
-       // printf("ADC value: %d\n", adc_value);
-        if (adc_value > 70)
+        printf("ADC value: %d\n", adc_value);
+        if (adc_value < 2500)
         {
             printf("Piezo is pressed\n");
             move_servo();
@@ -49,7 +51,7 @@ void app_main(void)
     initialize_servo();
 
     adc1_config_width(ADC_WIDTH_BIT_12);
-    adc1_config_channel_atten(ADC1_CHANNEL_5, ADC_ATTEN_DB_12);
+    adc1_config_channel_atten(ADC1_CHANNEL_5, ADC_ATTEN_DB_11);
   
 
    

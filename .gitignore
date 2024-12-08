@@ -3,3 +3,7 @@ sdkconfig
 sdkconfig.old
 *.vscode/
 settings.json
+.vscode/settings.json
+.vscode/c_cpp_properties.json
+main/CMakeLists.txt
+.DS_Store
