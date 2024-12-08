@@ -29,13 +29,10 @@ void raw_adc_task(void *arg)
     while (1)
     {     
         adc_value = adc1_get_raw(ADC1_CHANNEL_5);
-        printf("ADC value: %d\n", adc_value);
-        if (adc_value < 2500)
+        if (adc_value > 300)
         {
-            printf("Piezo is pressed\n");
-            move_servo();
-            vTaskDelay(300 / portTICK_PERIOD_MS);
-            stop_servo();
+            correct_code = true;
+            
         }
         vTaskDelay(50 / portTICK_PERIOD_MS);
 

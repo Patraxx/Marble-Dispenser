@@ -1,8 +1,8 @@
 {
   "C_Cpp.intelliSenseEngine": "default",
-  "idf.adapterTargetName": "esp32c3",
+  "idf.adapterTargetName": "esp32c6",
   "idf.openOcdConfigs": [
-    "board/esp32c3-ftdi.cfg"
+    "board/esp32c6-ftdi.cfg"
   ],
   "files.associations": {
     "extra.h": "c",

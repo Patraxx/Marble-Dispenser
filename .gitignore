@@ -7,3 +7,6 @@ settings.json
 .vscode/c_cpp_properties.json
 main/CMakeLists.txt
 .DS_Store
+.vscode/c_cpp_properties.json
+.gitignore
+.vscode/settings.json

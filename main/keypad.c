@@ -62,10 +62,10 @@ void scan_keypad(void *pvParameters)
 
                             printf("Code %s accepted and used.\n", input_code);
                             move_servo();
-                            vTaskDelay(200/ portTICK_PERIOD_MS);
-                            stop_servo();                                                                  
-                            }    
-                                                           
+                            vTaskDelay(150/ portTICK_PERIOD_MS);
+                            stop_servo();   
+                            vTaskDelay(150/ portTICK_PERIOD_MS);                                                               
+                            }                                                          
                     }
                     else{
                         printf("Code %s not accepted.\n", input_code);
