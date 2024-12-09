@@ -21,6 +21,7 @@ void add_to_code(char key, int *index)
 
 // Function to check and mark a code as used
 bool use_code(const char *code) {
+    printf("Checking code %s\n", code);
     
     // Check if the code is valid and has not been used yet
     for (int i = 0; i < NUM_CODES; i++) {
@@ -55,6 +56,6 @@ void reset_input_code()
 
 const char* accepted_codes[NUM_CODES] = {
     "1034", "1689", "1788", "2520", "2544", "2616", "3117", "3182", "3275", "3810",
-    "3845", "4270", "5051", "5103", "5908", "5971", "5982", "6046", "6617", "6646",
+    "3845", "4270", "5051", "0000", "5908", "5971", "5982", "6046", "6617", "6646",
     "6674", "8144", "8207", "9312", "9821"
 };

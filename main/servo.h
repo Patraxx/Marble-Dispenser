@@ -6,7 +6,7 @@
 #define MAX_DUTY 1023  // Max duty cycle (adjust to your resolution, e.g., 13-bit)
 #define MIN_DUTY 0 
 #define SERVO_PIN 7// GPIO pin connected to the servo
-#define DUTY 630
+#define DUTY 640
 
 #define SERVO_NEUTRAL_PULSEWIDTH 1500 // Neutral pulse width in microseconds
 #define SERVO_MIN_PULSEWIDTH 1000 // Minimum pulse width in microseconds

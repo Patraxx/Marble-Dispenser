@@ -31,7 +31,8 @@ void raw_adc_task(void *arg)
         adc_value = adc1_get_raw(ADC1_CHANNEL_5);
         if (adc_value > 300)
         {
-            correct_code = true;
+            printf("Marble detected, stopping servo-sequence\n");
+            correct_code = false;
             
         }
         vTaskDelay(50 / portTICK_PERIOD_MS);
@@ -54,7 +55,7 @@ void app_main(void)
    
     xTaskCreate(raw_adc_task, "piezo_task", 2048, NULL, 10, NULL);
 
-    //xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);
+    xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);
    
   
     //xTaskCreate(button_reading_task_for_servo, "button_reading_task", 2048, NULL, 10, NULL);

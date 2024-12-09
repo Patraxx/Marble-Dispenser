@@ -57,20 +57,24 @@ void scan_keypad(void *pvParameters)
 
                         add_to_code('\0', &code_index);
                         correct_code = use_code(input_code);
-                        code_index = 0;                    
+                        code_index = 0;          
+                        if(correct_code){
+                            printf("Correct code entered\n");
+                        }
+                        else{
+                            printf("Incorrect code entered\n");
+                        }          
                         while(correct_code){  
 
-                            printf("Code %s accepted and used.\n", input_code);
+                            
                             move_servo();
                             vTaskDelay(150/ portTICK_PERIOD_MS);
                             stop_servo();   
-                            vTaskDelay(150/ portTICK_PERIOD_MS);                                                               
-                            }                                                          
+                            vTaskDelay(500/ portTICK_PERIOD_MS);                                                               
+                        }
+                        reset_input_code(); 
                     }
-                    else{
-                        printf("Code %s not accepted.\n", input_code);
-                    }
-                    reset_input_code();   
+                                      
                     vTaskDelay(20 / portTICK_PERIOD_MS);
                 }
                   
