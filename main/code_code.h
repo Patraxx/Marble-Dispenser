@@ -18,7 +18,6 @@ void add_to_code(char key, int *index);
 
 bool use_code(const char* code);
 
-void reset_input_code();
 
 
 

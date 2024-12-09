@@ -1,7 +1,7 @@
 #include "code_code.h"
 
 bool used_codes[NUM_CODES] = {false};
-char input_code[CODE_LENGTH+1];
+char input_code[CODE_LENGTH+1] = {'\0'}; // +1 for null terminator
 #define DEBUGGING 1
 
 void add_to_code(char key, int *index)
@@ -46,13 +46,7 @@ bool use_code(const char *code) {
     return false;  // Code not found in the list
 }
 
-void reset_input_code()
-{
-    for (int i = 0; i < CODE_LENGTH; i++)
-    {
-        input_code[i] = '\0';
-    }
-}
+
 
 const char* accepted_codes[NUM_CODES] = {
     "1034", "1689", "1788", "2520", "2544", "2616", "3117", "3182", "3275", "3810",

@@ -13,6 +13,16 @@ char keymap[4][3] = {
     {'4', '5', '6'},
     {'7', '8', '9'},
     {'*', '0', '#'}};
+
+void reset_input_code()
+{
+    for (int i = 0; i < CODE_LENGTH; i++)
+    {
+        input_code[i] = '\0';
+    }
+    code_index = 0;
+    
+}
     
 
 void initialize_gpio()
@@ -33,9 +43,22 @@ void initialize_gpio()
 
 }
 
+void code_correct_loop(){
+
+    while(correct_code)
+    {  
+        move_servo();
+        vTaskDelay(SERVO_DURATION/ portTICK_PERIOD_MS);
+        stop_servo();   
+        vTaskDelay(500/ portTICK_PERIOD_MS);         
+        //start a servo counter. if the servo has gone through more than 10 loops, stop it.                                                      
+    }
+
+}
+
 void scan_keypad(void *pvParameters)
 {   
-    correct_code = false;
+    //correct_code = false;
     while(1)
     {
 
@@ -46,37 +69,27 @@ void scan_keypad(void *pvParameters)
                 {
                     if (gpio_get_level(col_pins[j]) == 0)
                     {   
+                        // lägg till ett sätt att avbryta kodinmatning och börja om
                         printf("Key pressed: %c\n", keymap[i][j]);
-                        add_to_code(keymap[i][j], &code_index);                         
-                   
+                        add_to_code(keymap[i][j], &code_index);                                         
                         vTaskDelay(200 / portTICK_PERIOD_MS);
-                        
-                       
+                                              
                     if(code_index == CODE_LENGTH){ 
 
-                        add_to_code('\0', &code_index);
+                        
+
                         correct_code = use_code(input_code);
                                 
                         if(correct_code){
                             printf("Correct code entered\n");
+                            code_correct_loop();
                         }
                         else{
                             printf("Incorrect code entered\n");
-                        }          
-                        while(correct_code){  
-
-                            
-                            move_servo();
-                            vTaskDelay(SERVO_DURATION/ portTICK_PERIOD_MS);
-                            stop_servo();   
-                            vTaskDelay(500/ portTICK_PERIOD_MS);         
-
-                            //start a servo counter. if the servo has gone through more than 10 loops, stop it.                                                      
-                        }
+                        }                                
                         reset_input_code(); 
                         code_index = 0;  
-                    }
-                                      
+                    }                                
                     vTaskDelay(20 / portTICK_PERIOD_MS);
                 }
                   

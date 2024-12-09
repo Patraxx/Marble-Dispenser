@@ -13,6 +13,10 @@ void initialize_gpio();
 
 void scan_keypad();
 
+void code_correct_loop();
+
+void reset_input_code();
+
 
 
 
