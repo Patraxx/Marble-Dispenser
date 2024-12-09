@@ -3,6 +3,7 @@
 int servo_duty = DUTY;
 int increment = 5;
 
+
 void initialize_servo()
 {
     // Configure the LEDC timer

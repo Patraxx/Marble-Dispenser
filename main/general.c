@@ -53,6 +53,36 @@ void button_reading_task_for_servo(void *arg)  //button reading, but reserved fo
     vTaskDelete(NULL); // Delete the task if it ever exits the loop
 }
 
+void button_reading_task_stop_servo(void *arg)  //button reading, but reserved for servo
+{
+    while (1)
+    {
+        // Button 1: Start/stop servo
+        if (gpio_get_level(BUTTON_PIN1) == 0) // Button 1 is pressed
+        {         
+            correct_code = false;
+            vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
+        }
+        // Button 2: Increase duty
+        if (gpio_get_level(BUTTON_PIN2) == 0) // Button 2 is pressed
+        {
+           correct_code = false;           
+           vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
+        }
+        // Button 3: Decrease duty
+        if (gpio_get_level(BUTTON_PIN3) == 0) // Button 3 is pressed
+        {
+           
+            correct_code = false;
+            vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
+        }
+
+        vTaskDelay(10 / portTICK_PERIOD_MS); // Small delay to reduce CPU usage
+    }
+
+    vTaskDelete(NULL); // Delete the task if it ever exits the loop
+}
+
 /*
 
 typedef struct {

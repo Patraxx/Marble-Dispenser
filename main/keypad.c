@@ -47,8 +47,7 @@ void scan_keypad(void *pvParameters)
                     if (gpio_get_level(col_pins[j]) == 0)
                     {   
                         printf("Key pressed: %c\n", keymap[i][j]);
-                        add_to_code(keymap[i][j], &code_index); 
-                        //pip?                            
+                        add_to_code(keymap[i][j], &code_index);                         
                    
                         vTaskDelay(200 / portTICK_PERIOD_MS);
                         
@@ -57,7 +56,7 @@ void scan_keypad(void *pvParameters)
 
                         add_to_code('\0', &code_index);
                         correct_code = use_code(input_code);
-                        code_index = 0;          
+                                
                         if(correct_code){
                             printf("Correct code entered\n");
                         }
@@ -68,11 +67,14 @@ void scan_keypad(void *pvParameters)
 
                             
                             move_servo();
-                            vTaskDelay(150/ portTICK_PERIOD_MS);
+                            vTaskDelay(SERVO_DURATION/ portTICK_PERIOD_MS);
                             stop_servo();   
-                            vTaskDelay(500/ portTICK_PERIOD_MS);                                                               
+                            vTaskDelay(500/ portTICK_PERIOD_MS);         
+
+                            //start a servo counter. if the servo has gone through more than 10 loops, stop it.                                                      
                         }
                         reset_input_code(); 
+                        code_index = 0;  
                     }
                                       
                     vTaskDelay(20 / portTICK_PERIOD_MS);
