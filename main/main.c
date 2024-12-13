@@ -29,9 +29,10 @@ void raw_adc_task(void *arg)
     while (1)
     {     
         adc_value = adc1_get_raw(ADC1_CHANNEL_5);
-        if (adc_value > 250)
+       
+        if (adc_value > 150)
         {
-            printf("Marble detected, stopping servo-sequence\n");
+           printf("Marble detected, stopping servo-sequence\n");
             correct_code = false;
             printf("adc value: %d\n", adc_value);
             vTaskDelay(200 / portTICK_PERIOD_MS);

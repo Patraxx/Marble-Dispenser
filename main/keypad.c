@@ -44,13 +44,18 @@ void initialize_gpio()
 }
 
 void code_correct_loop(){
+    int counter = 0;
 
     while(correct_code)
     {  
         move_servo();
+        counter++;
         vTaskDelay(SERVO_DURATION/ portTICK_PERIOD_MS);
         stop_servo();   
-        vTaskDelay(500/ portTICK_PERIOD_MS);         
+        vTaskDelay(500/ portTICK_PERIOD_MS); 
+        if(counter > 5){
+            correct_code = false;
+        }        
         //start a servo counter. if the servo has gone through more than 10 loops, stop it.                                                      
     }
 
@@ -75,8 +80,6 @@ void scan_keypad(void *pvParameters)
                         vTaskDelay(200 / portTICK_PERIOD_MS);
                                               
                     if(code_index == CODE_LENGTH){ 
-
-                        
 
                         correct_code = use_code(input_code);
                                 
