@@ -16,7 +16,7 @@ void initalize_input_piezo()
     config.pin_bit_mask = (1 << PIEZO_PIN);
     config.mode = GPIO_MODE_INPUT;
     config.pull_up_en = GPIO_PULLUP_DISABLE;
-    config.pull_down_en = GPIO_PULLDOWN_ENABLE;
+    config.pull_down_en = GPIO_PULLDOWN_DISABLE;
     config.intr_type = GPIO_INTR_DISABLE;
     gpio_config(&config);
 }
@@ -29,13 +29,13 @@ void raw_adc_task(void *arg)
     while (1)
     {     
         adc_value = adc1_get_raw(ADC1_CHANNEL_5);
-       
-        if (adc_value > 150)
+       // printf("adc value: %d\n", adc_value);
+        if (adc_value > 120)
         {
-           printf("Marble detected, stopping servo-sequence\n");
+            printf(" Marble detected, stopping servo-sequence  ");
             correct_code = false;
             printf("adc value: %d\n", adc_value);
-            vTaskDelay(200 / portTICK_PERIOD_MS);
+            vTaskDelay(400 / portTICK_PERIOD_MS);
             
         }
         vTaskDelay(50 / portTICK_PERIOD_MS);
@@ -46,7 +46,7 @@ void raw_adc_task(void *arg)
 
 void app_main(void)
 {  
-   // initalize_input_piezo();
+    initalize_input_piezo();
     initialize_gpio();
     initialize_buttons();
     initialize_servo();
