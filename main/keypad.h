@@ -7,6 +7,9 @@
 #include "driver/gpio.h"
 #include "servo.h"
 #include <string.h>
+#include "code_code.h"
+#include "servo.h"
+#include "general.h" 
 
 volatile extern bool correct_code;
 void initialize_gpio();
