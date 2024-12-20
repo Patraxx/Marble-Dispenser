@@ -3,7 +3,6 @@
 #include "keypad.h"
 #include "servo.h"
 #include "code_code.h"
-#include "general.h"
 #include "driver/adc.h"
 #include "esp_adc_cal.h"
 
@@ -52,7 +51,7 @@ void green_LED_task(void *arg)
        
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
-    xTaskDelete(NULL);
+    vTaskDelete(NULL);
 }
 
 

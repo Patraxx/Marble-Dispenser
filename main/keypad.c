@@ -76,7 +76,7 @@ void scan_keypad(void *pvParameters)
                         // lägg till ett sätt att avbryta kodinmatning och börja om
                         printf("Key pressed: %c\n", keymap[i][j]);
                         add_to_code(keymap[i][j], &code_index);   
-                        xTaskNotify(green_LED_handle, 0, eNoAction); // Notify green LED task to turn on                                      
+                     //   xTaskNotify(green_LED_handle, 0, eNoAction); // Notify green LED task to turn on                                      
                         vTaskDelay(200 / portTICK_PERIOD_MS);
                                               
                     if(code_index == CODE_LENGTH){ 
