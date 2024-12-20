@@ -35,27 +35,42 @@ void raw_adc_task(void *arg)
             printf(" Marble detected, stopping servo-sequence  ");
             correct_code = false;
             printf("adc value: %d\n", adc_value);
-            vTaskDelay(400 / portTICK_PERIOD_MS);
-            
+            vTaskDelay(400 / portTICK_PERIOD_MS);           
         }
         vTaskDelay(50 / portTICK_PERIOD_MS);
-
     }
 }
+
+void green_LED_task(void *arg)
+{
+    while (1)
+    {
+        xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
+        gpio_set_level(LED_PIN_GREEN, 1);
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        gpio_set_level(LED_PIN_GREEN, 0);
+       
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+    xTaskDelete(NULL);
+}
+
 
 
 void app_main(void)
 {  
     initalize_input_piezo();
     initialize_gpio();
-    initialize_buttons();
+    initialize_LED();
     initialize_servo();
 
     adc1_config_width(ADC_WIDTH_BIT_12);
     adc1_config_channel_atten(ADC1_CHANNEL_5, ADC_ATTEN_DB_11);
-  
 
    
+  
+
+   xTaskCreate(green_LED_task, "green_LED_task", 2048, NULL, 10, NULL);
     xTaskCreate(raw_adc_task, "piezo_task", 2048, NULL, 10, NULL);
 
     xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);

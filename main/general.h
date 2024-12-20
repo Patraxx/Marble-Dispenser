@@ -8,9 +8,12 @@
 #define BUTTON_PIN1 2
 #define BUTTON_PIN2 3
 #define BUTTON_PIN3 4
-#define LED_PIN_GREEN 6
-#define LED_PIN_RED 8
+#define LED_PIN_GREEN 2
+#define LED_PIN_RED 3
 
+ TaskHandle_t green_LED_handle;
+ TaskHandle_t red_LED_handle;
+ 
 
 
 void initialize_buttons(void);
