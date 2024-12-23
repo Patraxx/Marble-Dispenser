@@ -4,7 +4,7 @@
 void initialize_buttons(void)
 {
     gpio_config_t config;
-    config.pin_bit_mask = (1 << BUTTON_PIN1) | (1 << BUTTON_PIN2) | (1 << BUTTON_PIN3);
+    config.pin_bit_mask = 1 << BUTTONPIN14;
     config.mode = GPIO_MODE_INPUT;
     config.pull_up_en = GPIO_PULLUP_ENABLE;
     config.pull_down_en = GPIO_PULLDOWN_DISABLE;
@@ -76,6 +76,26 @@ void button_reading_task_stop_servo(void *arg)  //button reading, but reserved f
             correct_code = false;
             vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
         }
+
+        vTaskDelay(10 / portTICK_PERIOD_MS); // Small delay to reduce CPU usage
+    }
+
+    vTaskDelete(NULL); // Delete the task if it ever exits the loop
+}
+
+void button_reading_task_servo_session(void *arg)  //button reading, but reserved for servo
+{
+    while (1)
+    {
+        // Button 1: Start/stop servo
+        if (gpio_get_level(BUTTONPIN14) == 0) // Button 1 is pressed
+        {       
+            printf("Button pressed\n");  
+            correct_code = true;
+            code_correct_loop();
+            vTaskDelay(300 / portTICK_PERIOD_MS); // Debounce delay
+        }
+     
 
         vTaskDelay(10 / portTICK_PERIOD_MS); // Small delay to reduce CPU usage
     }

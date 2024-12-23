@@ -91,20 +91,18 @@ void app_main(void)
     initialize_gpio();
     initialize_LED();
     initialize_servo();
+   // initialize_buttons();
 
     adc1_config_width(ADC_WIDTH_BIT_12);
     adc1_config_channel_atten(ADC1_CHANNEL_5, ADC_ATTEN_DB_11);
 
   
-
+  //  xTaskCreate(button_reading_task_servo_session, "button_reading_task", 2048, NULL, 10, NULL);
     xTaskCreate(green_LED_task, "green_LED_task", 2048, NULL, 10, &green_LED_handle);
     xTaskCreate(raw_adc_task, "piezo_task", 2048, NULL, 10, NULL);
     xTaskCreate(red_LED_task, "red_LED_task", 2048, NULL, 10, &red_LED_handle);
 
     xTaskCreate(scan_keypad, "scan_keypad", 2048, NULL, 10, NULL);
-   
-  
-    //xTaskCreate(button_reading_task_for_servo, "button_reading_task", 2048, NULL, 10, NULL);
 
    
 }

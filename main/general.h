@@ -10,6 +10,7 @@
 #define BUTTON_PIN3 4
 #define LED_PIN_GREEN 2
 #define LED_PIN_RED 3
+#define BUTTONPIN14 14
 
 extern TaskHandle_t green_LED_handle;
 extern TaskHandle_t red_LED_handle;
@@ -20,6 +21,7 @@ extern TaskHandle_t red_LED_handle;
 void initialize_buttons(void);
 void initialize_LED(void);
 void button_reading_task_for_servo(void *arg);
+void button_reading_task_servo_session(void *arg);
 
 
 #endif // GENERAL_H
