@@ -11,9 +11,10 @@
 #define LED_PIN_GREEN 2
 #define LED_PIN_RED 3
 
- TaskHandle_t green_LED_handle;
- TaskHandle_t red_LED_handle;
- 
+extern TaskHandle_t green_LED_handle;
+extern TaskHandle_t red_LED_handle;
+// TaskHandle_t red_LED_handle;
+
 
 
 void initialize_buttons(void);

@@ -44,9 +44,11 @@ void initialize_gpio()
 
 void code_correct_loop(){
     int counter = 0;
-
+   
+     
     while(correct_code)
-    {  
+    {   
+        gpio_set_level(LED_PIN_GREEN, 1);   
         move_servo();
         counter++;
         vTaskDelay(SERVO_DURATION/ portTICK_PERIOD_MS);
@@ -54,9 +56,12 @@ void code_correct_loop(){
         vTaskDelay(500/ portTICK_PERIOD_MS); 
         if(counter > 5){
             correct_code = false;
+            gpio_set_level(LED_PIN_GREEN, 0);
         }        
         //start a servo counter. if the servo has gone through more than 10 loops, stop it.                                                      
     }
+
+    gpio_set_level(LED_PIN_GREEN, 0);
 
 }
 
@@ -68,16 +73,26 @@ void scan_keypad(void *pvParameters)
 
         for (int i = 0; i < 4; i++)
             {
+            
                 gpio_set_level(row_pins[i], 0);
                 for (int j = 0; j < 3; j++)
                 {
                     if (gpio_get_level(col_pins[j]) == 0)
                     {   
+                        if(keymap[i][j] == '*'){
+                            xTaskNotify(red_LED_handle, 0, eNoAction); // Notify red LED task to turn on
+                            reset_input_code();
+                            code_index = 0;
+                            printf("Code reset\n");
+                            vTaskDelay(200 / portTICK_PERIOD_MS);
+                            break;
+                        } 
                         // lägg till ett sätt att avbryta kodinmatning och börja om
                         printf("Key pressed: %c\n", keymap[i][j]);
                         add_to_code(keymap[i][j], &code_index);   
-                     //   xTaskNotify(green_LED_handle, 0, eNoAction); // Notify green LED task to turn on                                      
+                        xTaskNotify(green_LED_handle, 0, eNoAction); // Notify green LED task to turn on                                                  
                         vTaskDelay(200 / portTICK_PERIOD_MS);
+                        // kolla vadfan som händer här                                                            
                                               
                     if(code_index == CODE_LENGTH){ 
 
@@ -88,6 +103,7 @@ void scan_keypad(void *pvParameters)
                             code_correct_loop();
                         }
                         else{
+                            xTaskNotify(red_LED_handle, 0, eNoAction); // Notify red LED task to turn on
                             printf("Incorrect code entered\n");
                         }                                
                         reset_input_code(); 

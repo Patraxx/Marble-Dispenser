@@ -51,13 +51,13 @@ void move_servo()
     
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, servo_duty);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    printf("Moving servo with duty: %d\n", servo_duty);
+   // printf("Moving servo with duty: %d\n", servo_duty);
 }
 void stop_servo()
 {  
     ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 0);
     ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);
-    printf("Stopping servo\n");
+   // printf("Stopping servo\n");
 }
 
 
