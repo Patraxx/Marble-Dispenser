@@ -2,7 +2,7 @@
 
 bool used_codes[NUM_CODES] = {false};
 char input_code[CODE_LENGTH+1] = {'\0'}; // +1 for null terminator
-#define DEBUGGING 1
+#define DEBUGGING 0
 
 void add_to_code(char key, int *index)
 {
@@ -27,9 +27,14 @@ bool use_code(const char *code) {
     for (int i = 0; i < NUM_CODES; i++) {
         if (strcmp(accepted_codes[i], code) == 0) {
             if (!used_codes[i]) {
+
+                //if (piezo_triggered) {add used code to list}
                 #if !DEBUGGING
                     printf("Code %s has been used.\n", code);
-                    used_codes[i] = true;  // Mark the code as used
+                    if(piezo_triggered){
+                         used_codes[i] = true;  // Mark the code as used
+                    }
+                   
                     return true;  // Successfully used the code
                 #else
                     printf("Code is correct. \n");

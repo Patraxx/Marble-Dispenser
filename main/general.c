@@ -1,4 +1,5 @@
 #include "general.h"
+bool piezo_triggered = false;
 
 
 void initialize_buttons(void)

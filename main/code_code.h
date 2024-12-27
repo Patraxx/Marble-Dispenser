@@ -3,6 +3,7 @@
 
 #include "keypad.h"
 #include "servo.h"
+#include "general.h"
 
 
 #define CODE_LENGTH 4

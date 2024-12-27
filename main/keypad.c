@@ -52,10 +52,12 @@ void code_correct_loop(){
         move_servo();
         counter++;
         vTaskDelay(SERVO_DURATION/ portTICK_PERIOD_MS);
-        stop_servo();   
+        stop_servo();  
+        decrease_servo_duty();       
         vTaskDelay(500/ portTICK_PERIOD_MS); 
         if(counter > 5){
             correct_code = false;
+            servo_duty = DUTY;
             gpio_set_level(LED_PIN_GREEN, 0);
         }        
         //start a servo counter. if the servo has gone through more than 10 loops, stop it.                                                      

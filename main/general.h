@@ -14,6 +14,7 @@
 
 extern TaskHandle_t green_LED_handle;
 extern TaskHandle_t red_LED_handle;
+extern bool piezo_triggered;
 // TaskHandle_t red_LED_handle;
 
 

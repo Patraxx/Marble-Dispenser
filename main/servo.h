@@ -14,6 +14,7 @@
 #define SERVO_MAX_PULSEWIDTH 2000 
 
 void initialize_servo();
+extern int servo_duty;
 
 void stop_servo();
 void move_servo();

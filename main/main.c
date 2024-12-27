@@ -33,6 +33,8 @@ void raw_adc_task(void *arg)
         if (adc_value > 120)
         {
             printf(" Marble detected, stopping servo-sequence  ");
+            servo_duty = DUTY;
+            piezo_triggered = true;
             correct_code = false;
             xTaskNotify(green_LED_handle, 0, eNoAction);
             printf("adc value: %d\n", adc_value);
